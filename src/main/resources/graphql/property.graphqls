@@ -1,0 +1,114 @@
+# ========= ENUMS =========
+enum StatusU {
+    PUBLISHED
+    DRAFT
+}
+
+# ========= TYPES =========
+type Property {
+    id: ID
+    name: String
+    slug: String
+    description: String
+    latitude: Float
+    longitude: Float
+    publishedAt: String
+    address: String
+    city: String
+    status: StatusR
+    isVerified: Boolean
+    isPublished: Boolean
+    createdAt: String
+    deletedAt: String
+    extra: PropertyDetails
+    type: PropertyType
+    features: [PropertyFeatures]
+}
+
+type PropertyDetails {
+    bathRooms: Int
+    bedRooms: Int
+    singleBedRooms: Boolean
+    doubleBedRooms: Boolean
+    kitchens: Int
+    rooms: Int
+    maxPersonnes: Int
+}
+
+type PropertyPages {
+    content: [Property!]!
+    page: Int
+    size: Int
+    limit: Int
+    totalPages: Int
+    totalElements: Int
+    first: Boolean
+    last: Boolean
+}
+
+type ChangeStatusPropertyResponse {
+    response: Property!
+    changed: Boolean!
+}
+
+type ChangeStatusPropertyDetailResponse {
+    response: PropertyDetails!
+    changed: Boolean!
+}
+
+# ========= INPUTS =========
+input PropertyDetailsRequest {
+    bathRooms: Int!
+    bedRooms: Int!
+    singleBedRooms: Boolean!
+    doubleBedRooms: Boolean!
+    kitchens: Int!
+    rooms: Int!
+    maxPersonnes: Int!
+}
+
+input PropertyRequest {
+    name: String
+    description: String
+    latitude: Float
+    longitude: Float
+    address: String
+    city: String
+    type: ID
+    extra: PropertyDetailsRequest
+    features : [ID]
+}
+
+# ========= QUERIES =========
+extend type Query {
+    getAllProperty(
+        search: String = "",
+        sort: SortInput
+    ): [Property!]!
+
+    getPageProperty(
+        search: String = "",
+        sort: SortInput,
+        page: Int = 1,
+        limit: Int = 8,
+        deleted: Boolean = false
+    ): PropertyPages
+
+    getPropertyById(id: ID): Property
+
+    getPropertyBySlug(slug: String): Property
+}
+
+# ========= MUTATIONS =========
+extend type Mutation {
+    createProperty(request: PropertyRequest): Property
+    updateProperty(id: ID, request: PropertyRequest): ChangeStatusPropertyResponse
+    deleteProperty(id: ID): Property
+    destroyProperty(id: ID): Property
+    recoverProperty(id: ID): Property
+    updateStatusProperty(id: ID, status: StatusU): ChangeStatusPropertyResponse
+    verifiedProperty(id: ID, verified: Boolean = false): ChangeStatusPropertyResponse
+    updateExtraInfoProperty(id: ID, request : PropertyDetailsRequest): ChangeStatusPropertyDetailResponse
+    addPropertyFeaturesToProperty(id:ID!,data:[ID!]!) : ChangeStatusPropertyResponse
+
+}

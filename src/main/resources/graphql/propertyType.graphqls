@@ -1,0 +1,44 @@
+type PropertyType {
+    id: ID
+    name: String
+    createdAt: String
+    deleteAt: String
+}
+
+input PropertyTypeRequest {
+    name: String!
+}
+type ChangeStatusPropertyTypeResponse {
+    response: PropertyType!
+    changed: Boolean!
+}
+type PropertyTypePages {
+    content: [PropertyType!]!
+    page: Int
+    size: Int
+    limit: Int
+    totalPages: Int
+    totalElements: Int
+    first: Boolean
+    last: Boolean
+}
+
+type Query {
+    getAllPropertyTypes(search: String = "", sort: SortInput): [PropertyType!]!
+    getPagePropertyTypes(
+        search: String = "",
+        sort: SortInput,
+        page: Int = 1,
+        limit: Int = 8,
+        deleted: Boolean = false
+    ): PropertyTypePages
+    getPropertyTypeById(id: ID): PropertyType
+}
+
+ type Mutation  {
+    createPropertyType(request: PropertyTypeRequest): PropertyType
+    updatePropertyType(id: ID, request: PropertyTypeRequest): ChangeStatusPropertyTypeResponse
+    deletePropertyType(id: ID): PropertyType
+    destroyPropertyType(id: ID): PropertyType
+    recoveryPropertyType(id: ID): PropertyType
+}

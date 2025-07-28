@@ -1,0 +1,50 @@
+type PropertyFeatures{
+    id: ID
+    name : String
+    description :String
+    autoRestore:Boolean
+    createdAt: String
+}
+
+input PropertyFeaturesRequest{
+    name : String
+    description :String
+    autoRestore : Boolean
+}
+
+type PropertyFeaturesPages {
+    content: [PropertyFeatures!]!
+    page: Int
+    size: Int
+    limit: Int
+    totalPages: Int
+    totalElements: Int
+    first: Boolean
+    last: Boolean
+}
+type ChangeStatusPropertyFeaturesResponse {
+    response: PropertyFeatures!
+    changed: Boolean!
+}
+
+extend type Query{
+    getAllPropertyFeatures(
+        search: String = "",
+        sort: SortInput
+    ): [PropertyFeatures!]!
+    getPagePropertyFeatures(
+        search: String = "",
+        sort: SortInput,
+        page: Int = 1,
+        limit: Int = 8,
+        deleted: Boolean = false
+    ): PropertyFeaturesPages
+}
+
+extend type Mutation {
+    createPropertyFeatures(request: PropertyFeaturesRequest): PropertyFeatures
+    updatePropertyFeatures(id: ID!, request: PropertyFeaturesRequest): ChangeStatusPropertyFeaturesResponse
+    deletePropertyFeatures(id: ID!): PropertyFeatures
+    destroyPropertyFeatures(id: ID!): PropertyFeatures
+    recoverPropertyFeatures(id: ID!): PropertyFeatures
+}

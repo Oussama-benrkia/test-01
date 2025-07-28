@@ -1,0 +1,19 @@
+input SortInput {
+    fields: [SortFieldInput!]
+}
+
+input SortFieldInput {
+    field: String!
+    direction: SortDirection = ASC
+}
+
+enum SortDirection {
+    ASC
+    DESC
+}
+
+enum StatusR {
+    RESERVED
+    PUBLISHED
+    DRAFT
+}
